@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Set;
+
 @Document(collection = "Community")
 public class Community {
 
@@ -28,11 +30,19 @@ public class Community {
 	@Getter
 	@Setter
 	private Set<User> attenderSet;
-
+*/
 	@Getter
 	@Setter
 	private Set<PostType> postTypeSet;
 
+	@Getter
+	@Setter
+	private Set<PostContent> postContentSet;
 
- */
+	@Getter
+	@Setter
+	private String bannerPic;
+
+
+
 }

@@ -4,16 +4,23 @@ import PostField from './PostField';
 
 class CreatePostType extends Component {
 
-    constructor() {
+    constructor( props ) {
         super();
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
+        this.addNewField = this.addNewField.bind(this);
+        this.postFieldChangeHandler = this.postFieldChangeHandler.bind(this);
+        this.postFieldDeleteHandler = this.postFieldDeleteHandler.bind(this);
+        this.createPostTypeHandler = this.createPostTypeHandler.bind(this);
+
     
         this.state = {
+          
+          community : props.location.props.community,
           form: {
             postTypeName:'',
             postTypeDesc:'',
             postFields : [{  
-                            required : '',
+                            required : false,
                             fieldLabel : '',
                             fieldType : '',
                             explanation : '' 
@@ -22,6 +29,37 @@ class CreatePostType extends Component {
           result : ''
         }
       }
+
+    createPostTypeHandler = event => {
+    
+      event.preventDefault();
+
+      let communitydata = this.state.community;
+      let postType =  this.state.form;
+      communitydata.postTypeSet.push(postType);
+
+    
+      const requestbody = {
+        "community" :  this.state.community
+      }
+
+
+      const url = "/saveCommunity";
+
+      fetch(url, {  method: "POST", 
+                    body: JSON.stringify(requestbody), 
+                    headers:{ "Content-Type": "application/json" } 
+                  })
+                  .then( response => response.json())
+                  .then( result => this.setState( { result : result.response.communityName }));
+      // result.response buradaki response response objelerinin içerisindeki attribute name  
+      
+      var message = `Post type is added successfully.` ;
+
+      console.log(message);
+
+    
+    }
 
     inputChangeHandler = event => {
         // event.target returns the <input/> component 
@@ -44,10 +82,10 @@ class CreatePostType extends Component {
                     postFields : [ 
                                     ...this.state.form.postFields,
                                     {  
-                                        required : '1',
-                                        fieldLabel : '1',
-                                        fieldType : '1',
-                                        explanation : '1' 
+                                        required : false,
+                                        fieldLabel : '',
+                                        fieldType : 'TEXT',
+                                        explanation : '' 
                                     }
                                 ]
                 }
@@ -100,15 +138,15 @@ class CreatePostType extends Component {
     let postFields = this.state.form.postFields;
 
     return (
-        <Form>
+        <Form onSubmit =  {this.createPostTypeHandler}>
           <FormGroup row>
-            <Label  sm={12} size="lg">Create Community Post Type</Label>
+            <Label  sm={12} size="lg">Community Post Type</Label>
           </FormGroup>
           <FormGroup row>
             <Label for = "postTypeInp" sm={4} size="md">Post Type Name</Label>
             <Col sm={8}>
               <Input id = "postTypeInp" type = "text" 
-                    name = "communityName" 
+                    name = "postTypeName" 
                     value = {this.state.form.postTypeName} 
                     onChange = {this.inputChangeHandler}></Input>
             </Col>
@@ -127,7 +165,7 @@ class CreatePostType extends Component {
 
           <FormGroup row>
             <Col sm={12}>
-              <Button onClick = {this.addNewField} color="secondary"> Add field </Button>  
+              <Button onClick = {this.addNewField} color="secondary"> Add New Field </Button>  
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -146,10 +184,8 @@ class CreatePostType extends Component {
                 />
               ))  
           }
+           <Button color = "success" >Create Post Type</Button>  
           
-
-          
-          <Button color = "success" >Save</Button>{' '}
         </Form>
   
       );

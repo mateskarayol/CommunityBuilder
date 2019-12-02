@@ -11,4 +11,7 @@ public interface CommunityService {
 	public List<Community> getAllCommunities();
 
 	public String saveCommunity(Community community);
-}
+
+	public List<Community> searchCommunity(String keyword);
+
+	}

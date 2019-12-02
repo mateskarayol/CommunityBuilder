@@ -9,4 +9,8 @@ public class CommunityServiceRequest {
 	@Getter
 	@Setter
 	private Community community;
+
+	@Getter
+	@Setter
+	private String keyword;
 }

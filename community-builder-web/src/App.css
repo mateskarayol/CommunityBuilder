@@ -33,3 +33,31 @@
 .centeredCheck {
   margin-left: 0rem !important;
 }
+
+.leftList {
+  margin-left : 2rem !important;
+}
+
+.marginbot {
+  margin-bottom : 2%;
+}
+
+.communityCardClass {
+  margin : 10% !important;
+}
+
+.listBody{
+  text-align: center;
+  max-width: 95%;
+  margin: 5%;
+}
+
+.communityBanner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centeredText{
+  text-align: center;
+}

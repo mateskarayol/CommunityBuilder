@@ -1,6 +1,6 @@
 
-import React, { Component } from 'react';
-import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import React from 'react';
+import { Col, Button, FormGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 
@@ -34,9 +34,11 @@ const PostField = ({ idx, postFieldArr, postFieldChangeHandler, postFieldDeleteH
                     name = {typId} 
                     value = {postFieldArr[idx].fieldType}
                     onChange = {postFieldChangeHandler}  >
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                    <option>Text</option>
+                    <option>Number</option>
+                    <option>Location</option>
+                    <option>Image</option>
+                    <option>Choice</option>
                 </Input>
              </Col>
             <Col sm={3}>

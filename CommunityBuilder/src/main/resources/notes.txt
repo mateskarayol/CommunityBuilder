@@ -1,0 +1,23 @@
+
+
+mongo installation directory  : /usr/local/var/mongodb
+
+bu foldere gidip mongo komutu ile shelli çalıştırıyoruz.
+
+documentasyon burda : https://docs.mongodb.com/manual/mongo/
+
+atlastaki mongo clusterina bağlanmak için
+hesap : melikeates.ma@gmail.com
+
+mongo inst. pathde bir kez aşağıdaki komut çalıştırıldı.
+
+brew install mongodb/brew/mongodb-community-shell
+
+clustera bağlanmak için
+mongo "mongodb+srv://cluster0-yxhas.mongodb.net/test"  --username mateskarayol
+
+sample query
+
+
+
+!!! oauth 2 configurasyonu yapılacak
