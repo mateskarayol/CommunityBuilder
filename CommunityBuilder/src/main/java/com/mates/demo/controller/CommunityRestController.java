@@ -2,17 +2,14 @@ package com.mates.demo.controller;
 
 import com.mates.demo.data.CommunityServiceRequest;
 import com.mates.demo.data.CommunityServiceResponse;
-import com.mates.demo.domain.Community;
-import com.mates.demo.dto.CommunityDto;
 import com.mates.demo.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class CommunityRestController {
@@ -22,19 +19,19 @@ public class CommunityRestController {
 
 	@GetMapping("/getCommunityList")
 	@ResponseBody
-	public List<Community> getCommunityList() {
+	public CommunityServiceResponse getCommunityList() {
+		CommunityServiceResponse response = new CommunityServiceResponse();
+		response.getResponse().put("communityList", communityService.getAllCommunities());
 
-		return communityService.getAllCommunities();
+		return response;
 	}
 
-	@GetMapping("/getCommunityByName")
+	@GetMapping("/searchCommunity")
 	@ResponseBody
-	public CommunityServiceResponse getCommunityByName(@RequestBody CommunityServiceRequest request) {
-
-		Community community=  communityService.getCommunity(request.getCommunity().getName());
+	public CommunityServiceResponse getCommunityByName(@RequestParam String keyword) {
 
 		CommunityServiceResponse response = new CommunityServiceResponse();
-		response.getResponse().put("community", CommunityDto.fromCommunity(community));
+		response.getResponse().put("communityList", communityService.searchCommunity(keyword));
 
 		return response;
 	}
@@ -50,4 +47,6 @@ public class CommunityRestController {
 
 		return response;
 	}
+
+
 }
