@@ -14,8 +14,9 @@ class ListCommunitiesForm extends Component {
   constructor() {
     super();
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
-    //this.listCommunitiesHandler = this.listCommunitiesHandler.bind(this);
     this.showCommunityHandler = this.showCommunityHandler.bind(this);
+    this.searchCommunity = this.searchCommunity.bind(this);
+
 
 
     this.state = {
@@ -46,6 +47,7 @@ class ListCommunitiesForm extends Component {
   }
 
   searchByKeywordHandler = event => {
+    event.preventDefault();
     this.searchCommunity();
   }
 
@@ -72,7 +74,7 @@ class ListCommunitiesForm extends Component {
     const listCommunities = (
       <div>
         <div className="listBody">
-||
+
             <InputGroup>
               <Input type = "text" name = "keyword" sm={5} 
                 value = {this.state.keyword}   

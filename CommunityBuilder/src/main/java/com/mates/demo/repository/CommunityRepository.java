@@ -11,6 +11,8 @@ public interface CommunityRepository extends MongoRepository<Community, Long>  {
 	@Query("{name:'?0'}")
 	public Community findByName(String name);
 
-	public List<Community> findByNameLike(String keyword);
+	@Query("{'name': {$regex: ?0, $options:'i' }})")
+	public List<Community> findByQuery(String keyword);
+
 
 }

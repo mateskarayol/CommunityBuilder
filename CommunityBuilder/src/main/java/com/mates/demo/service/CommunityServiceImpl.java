@@ -39,7 +39,7 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public List<Community> searchCommunity(String keyword){
-		return communityRepository.findByNameLike(keyword);
+		return communityRepository.findByQuery(keyword);
 	}
 
 
