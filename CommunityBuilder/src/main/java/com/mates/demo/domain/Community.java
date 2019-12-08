@@ -3,12 +3,16 @@ package com.mates.demo.domain;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 
 @Document(collection = "Community")
 public class Community {
+
+	@Transient
+	public static final String SEQUENCE_NAME = "community_sequence";
 
 	@Id
 	@Getter
@@ -37,7 +41,7 @@ public class Community {
 
 	@Getter
 	@Setter
-	private Set<PostContent> postContentSet;
+	private Set<Post> postContentSet;
 
 	@Getter
 	@Setter

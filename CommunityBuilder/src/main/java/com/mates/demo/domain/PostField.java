@@ -3,8 +3,12 @@ package com.mates.demo.domain;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 public class PostField {
+
+	@Transient
+	public static final String SEQUENCE_NAME = "post_field_sequence";
 
 	@Id
 	@Getter
