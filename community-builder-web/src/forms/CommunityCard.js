@@ -23,6 +23,7 @@ const CommunityCard = ({ communityList, showHandler}) => {
                                 community : communityList[idx]
                               }
                             }} color="secondary">Show</Link>  
+                            
                         </CardBody>
                     </Card>      
                 ))

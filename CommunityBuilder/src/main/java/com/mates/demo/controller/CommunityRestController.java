@@ -2,6 +2,7 @@ package com.mates.demo.controller;
 
 import com.mates.demo.data.CommunityServiceRequest;
 import com.mates.demo.data.CommunityServiceResponse;
+import com.mates.demo.domain.Community;
 import com.mates.demo.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,10 +41,10 @@ public class CommunityRestController {
 	@ResponseBody
 	public CommunityServiceResponse saveCommunity(@RequestBody CommunityServiceRequest request) {
 
-		String name =  communityService.saveCommunity(request.getCommunity());
+		Community community =  communityService.saveCommunity(request.getCommunity());
 
 		CommunityServiceResponse response = new CommunityServiceResponse();
-		response.getResponse().put("communityName", name);
+		response.getResponse().put("community", community);
 
 		return response;
 	}

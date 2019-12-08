@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import PostField from './PostField';
-import { Redirect } from "react-router-dom";
 
-
-class CreatePostType extends Component {
+class CreatePost extends Component {
 
     constructor( props ) {
         super();
-        this.inputChangeHandler = this.inputChangeHandler.bind(this);
-        this.addNewField = this.addNewField.bind(this);
-        this.postFieldChangeHandler = this.postFieldChangeHandler.bind(this);
-        this.postFieldDeleteHandler = this.postFieldDeleteHandler.bind(this);
+        //this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.createPostTypeHandler = this.createPostTypeHandler.bind(this);
+        this.postTypeComponent = this.postTypeComponent.bind(this);
 
     
         this.state = {
           
-          community : props.location.props.community,
+          postType : props.location.props.postType,
           form: {
             name:'',
             explanation:'',
@@ -28,13 +24,12 @@ class CreatePostType extends Component {
                             explanation : '' 
                         }]
           },
-          result : '',
-          showCommunityHome : false
+          result : ''
         }
       }
 
     createPostTypeHandler = event => {
-    
+    /*
       event.preventDefault();
 
       let communitydata = this.state.community;
@@ -54,22 +49,15 @@ class CreatePostType extends Component {
                     headers:{ "Content-Type": "application/json" } 
                   })
                   .then( response => response.json())
-                  .then(   result  => {  this.setState({
-                                                        ...this.state,
-                                                        community : result.response.community
-                                                    });
-                                        this.redirectToCommunityHome();
-                                      }
-                  );
+                  .then( result => this.setState( { result : result.response.communityName }));
       // result.response buradaki response response objelerinin içerisindeki attribute name  
       
       var message = `Post type is added successfully.` ;
 
       console.log(message);
-
-    
+*/
     }
-
+/*
     inputChangeHandler = event => {
         // event.target returns the <input/> component 
         // you should merge state !!!!
@@ -141,82 +129,74 @@ class CreatePostType extends Component {
         });   
     }
 
-    redirectToCommunityHome (){
-      this.setState({
-        ...this.state,
-        showCommunityHome : true
-      })
-    }
-  
+*/
 
+
+  postTypeComponent(field) {
+
+    let type = field.fieldType;
+    
+    switch(type) {
+      case 'TEXT':
+        return <Input id = {field.fieldLabel} type = "text" 
+                      name = {field.fieldLabel} 
+                      value = "" 
+                      onChange = {this.inputChangeHandler}></Input>;
+      case 'NUMBER':
+        return <Input id = {field.fieldLabel} type = "number" 
+                      name = {field.fieldLabel} 
+                      value = "" 
+                      onChange = {this.inputChangeHandler}></Input>;
+      case 'LOCATION':
+        return "";
+      case 'IMAGE':
+          return "";
+      case 'CHOICE':
+        return "";
+      default:
+        return null;
+    }
+  }
 
   render(){
 
-    let postFieldSet = this.state.form.postFieldSet;
+    let postType = this.state.postType;
+    let postFieldSet = this.state.postType.postFieldSet;
+    
+    /* postFieldSet : [{  
+      required : false,
+      fieldLabel : '',
+      fieldType : '',
+      explanation : '' 
+  }] */
 
-    const communityHome = (<Redirect to={{  pathname : "/communityHome",
-                                            props : {
-                                              community : this.state.community
-                                            }
-                                          }}/>);
 
-    const createPostType = (
-        <Form onSubmit =  {this.createPostTypeHandler}>
-          <FormGroup row>
-            <Label  sm={12} size="lg">Community Post Type</Label>
-          </FormGroup>
-          <FormGroup row>
-            <Label for = "postTypeInp" sm={4} size="md">Post Type Name</Label>
-            <Col sm={8}>
-              <Input id = "postTypeInp" type = "text" 
-                    name = "name" 
-                    value = {this.state.form.postTypeName} 
-                    onChange = {this.inputChangeHandler}></Input>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm={12} size="md"> Why people use this post type ?</Label>
-          </FormGroup>
-          <FormGroup row>
-            <Col sm={12}>
-              <Input id = "postTypeDescInp" type = "textarea" 
-                    name = "explanation" 
-                    value = {this.state.form.communityDescription} 
-                    onChange = {this.inputChangeHandler}></Input>
-            </Col>
-          </FormGroup>
+    return (
+        <Form onSubmit =  {this.createPostHandler}>
 
           <FormGroup row>
-            <Col sm={12}>
-              <Button onClick = {this.addNewField} color="secondary"> Add New Field </Button>  
-            </Col>
+            <Label  sm={6} size="lg">{postType.name}</Label>
+            <Label  sm={6} size="md">{postType.explanation}</Label>
           </FormGroup>
-          <FormGroup row>
-            <Label sm={2} size="md"> Required </Label>
-            <Label sm={3} size="md"> Field Label </Label>
-            <Label sm={3} size="md"> Data Type </Label>
-            <Label sm={3} size="md"> Explanation </Label>
-          </FormGroup>
+
           {
               postFieldSet.map((val, idx) =>  (
-                <PostField
-                        idx = {idx}
-                        postFieldArr = {postFieldSet}
-                        postFieldChangeHandler = {this.postFieldChangeHandler}
-                        postFieldDeleteHandler = {this.postFieldDeleteHandler}
-                />
+                <FormGroup row>
+                  <Label sm={4} size="md"> {postFieldSet[idx].fieldLabel} </Label>
+                  <Col sm={8}>
+                    {this.postTypeComponent(postFieldSet[idx])}
+                  </Col>
+                </FormGroup>
               ))  
           }
-           <Button color = "success" >Create Post Type</Button>  
-          
+
+          <Button color = "success" >Create Post</Button>  
         </Form>
   
       );
-
-      return (this.state.showCommunityHome ? communityHome : createPostType);
   }
 }
-export default CreatePostType;
+export default CreatePost;
 
 
 

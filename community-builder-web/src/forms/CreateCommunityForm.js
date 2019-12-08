@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Col, Button, Form, FormGroup, Label, Input, ListGroup,ListGroupItem } from 'reactstrap';
 import BasicModal from './BasicModal';
 import CreatePostType from './CreatePostType';
+import CommunityHome from './CommunityHome';
+import { Redirect } from "react-router-dom";
+
 
 class CreateCommunityForm extends Component {
   /*
@@ -15,29 +18,33 @@ class CreateCommunityForm extends Component {
     this.createCommunityHandler = this.createCommunityHandler.bind(this);
     this.toggle = this.toggle.bind(this);
     this.clearState = this.clearState.bind(this);
+    this.redirectToCommunityHome = this.redirectToCommunityHome.bind(this);
 
     this.state = {
       form: {
-        communityName:'',
-        communityDescription:'',
+        id : '',
+        name:'',
+        explanation:'',
         bannerPic : '',
         postTypeSet : [
           {
+            id : '',
             name : 'Basic Post',
             explanation : 'Basic post for general purposes',
             postFieldSet : [
                                 {
                                   required : false,
-                                  fieldLabel : '',
+                                  fieldLabel : 'Message',
                                   fieldType : 'TEXT',
-                                  explanation : ''
+                                  explanation : 'Message'
                                 }
                               ]
           }
         ],
       },
       result : '',
-      showMessage : false
+      showMessage : false,
+      showCommunityHome : false
     }
   }
 
@@ -58,8 +65,8 @@ class CreateCommunityForm extends Component {
   clearState(){
     this.setState({
       form: {
-        communityName:'',
-        communityDescription:'',
+        name:'',
+        explanation:'',
         bannerPic:'',
         postTypeSet : []
       }
@@ -92,8 +99,8 @@ class CreateCommunityForm extends Component {
     event.preventDefault();
     const communitydata = {
       "community" :  {
-        "name" : this.state.form.communityName,
-        "explanation" : this.state.form.communityDescription,
+        "name" : this.state.form.name,
+        "explanation" : this.state.form.explanation,
         "bannerPic" : this.state.form.bannerPic,
         "postTypeSet" : this.state.form.postTypeSet
       }
@@ -106,14 +113,19 @@ class CreateCommunityForm extends Component {
                   headers:{ "Content-Type": "application/json" } 
                 })
                 .then( response => response.json())
-                .then( result => this.setState( { result : result.response.communityName }));
+                .then( result  => {  this.setState({
+                                                ...this.state,
+                                                form : result.response.community
+                                            });
+                                this.redirectToCommunityHome();
+                              }
+                );
     // result.response buradaki response response objelerinin içerisindeki attribute name  
     
     var message = `Community is created successfully.` ;
 
     console.log(message);
     this.setState( { result: message , showMessage : true }) ;
-    this.clearState();
   }
 
   toggle() {
@@ -128,12 +140,24 @@ class CreateCommunityForm extends Component {
     });
   }
 
+  redirectToCommunityHome (){
+    this.setState({
+      ...this.state,
+      showCommunityHome : true
+    })
+  }
+
 
   render(){
 
-    let postTypeSet = this.state.form.postTypeSet;
+  let postTypeSet = this.state.form.postTypeSet;
 
-    return (
+    const communityHome = (<Redirect to={{  pathname : "/communityHome",
+                                            props : {
+                                              community : this.state.form
+                                            }
+                                          }}/>)
+    const createCommunityForm = (
       <div>
       <Form onSubmit =  {this.createCommunityHandler} >
         <FormGroup row>
@@ -142,7 +166,7 @@ class CreateCommunityForm extends Component {
         <FormGroup row>
           <Label for = "communityNameInp" sm={4} size="md">Community Name</Label>
           <Col sm={8}>
-            <Input id = "communityNameInp" type = "text" name = "communityName" value = {this.state.form.communityName} onChange = {this.inputChangeHandler}></Input>
+            <Input id = "communityNameInp" type = "text" name = "name" value = {this.state.form.name} onChange = {this.inputChangeHandler}></Input>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -150,7 +174,7 @@ class CreateCommunityForm extends Component {
         </FormGroup>
         <FormGroup row>
           <Col sm={12}>
-            <Input id = "communityDescInp" type = "textarea" name = "communityDescription" value = {this.state.form.communityDescription} onChange = {this.inputChangeHandler}></Input>
+            <Input id = "communityDescInp" type = "textarea" name = "explanation" value = {this.state.form.explanation} onChange = {this.inputChangeHandler}></Input>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -190,6 +214,8 @@ class CreateCommunityForm extends Component {
                                               modalTitle ="Info" toggle = {this.toggle}/> }
     </div>
     );
+
+    return ( this.state.showCommunityHome ? communityHome : createCommunityForm);
   }
 }
 

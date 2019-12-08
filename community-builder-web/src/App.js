@@ -6,6 +6,8 @@ import CreateCommunityForm  from "./forms/CreateCommunityForm";
 import CreatePostType  from "./forms/CreatePostType";
 import ListCommunitiesForm  from "./forms/ListCommunitiesForm";
 import CommunityHome  from "./forms/CommunityHome";
+import CreatePost  from "./forms/CreatePost";
+
 
 
 
@@ -40,7 +42,14 @@ class App extends Component {
                       component={ListCommunitiesForm} />
               <Route  exact 
                       path="/communityHome"  
-                      component={CommunityHome} />
+                      //component={CommunityHome} />
+                      render={(props) => <CommunityHome {...props}/> }
+              />
+              <Route  exact 
+                      path="/createPost"  
+                      //component={CommunityHome} />
+                      render={(props) => <CreatePost {...props}/> }
+              />
 
             
 

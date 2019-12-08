@@ -34,11 +34,12 @@ const PostField = ({ idx, postFieldArr, postFieldChangeHandler, postFieldDeleteH
                     name = {typId} 
                     value = {postFieldArr[idx].fieldType}
                     onChange = {postFieldChangeHandler}  >
-                    <option>Text</option>
-                    <option>Number</option>
-                    <option>Location</option>
-                    <option>Image</option>
-                    <option>Choice</option>
+                    <option value ="" >Select</option>
+                    <option value ="TEXT" >Text</option>
+                    <option value ="NUMBER" >Number</option>
+                    <option value ="LOCATION" >Location</option>
+                    <option value ="IMAGE" >Image</option>
+                    <option value ="CHOICE" >Choice</option>
                 </Input>
              </Col>
             <Col sm={3}>
