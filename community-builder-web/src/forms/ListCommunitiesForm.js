@@ -45,23 +45,26 @@ class ListCommunitiesForm extends Component {
     });
   }
 
+  searchByKeywordHandler = event => {
+    this.searchCommunity();
+  }
 
 
   componentDidMount() {
-    
+    this.searchCommunity();
+  }
+
+  searchCommunity(){
     let url = '';
     if(this.state.keyword == '*')
       url = '/getCommunityList';
     else
       url = `/searchCommunity?keyword=${this.state.keyword}`;
 
-
     const response = fetch(url).then( response => response.json())
                               .then( result => this.setState( { communityList : result.response.communityList }));
-
-    console.log("result")
-    console.log(this.state.result);
   }
+
 
   render(){
     let communityList = this.state.communityList;
@@ -69,13 +72,15 @@ class ListCommunitiesForm extends Component {
     const listCommunities = (
       <div>
         <div className="listBody">
-
+||
             <InputGroup>
               <Input type = "text" name = "keyword" sm={5} 
                 value = {this.state.keyword}   
                 onChange = {this.inputChangeHandler} 
                 placeholder = "Search community"> </Input>
-              <InputGroupAddon addonType="append"><Button color="success">Search</Button></InputGroupAddon>
+              <InputGroupAddon addonType="append">
+                <Button color="success" onClick={this.searchByKeywordHandler}>Search</Button>
+              </InputGroupAddon>
             </InputGroup>
             
 
