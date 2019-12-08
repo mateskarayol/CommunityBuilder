@@ -52,6 +52,19 @@ class CommunityHome extends Component {
                             }} color="secondary">Create New Post Type</Link> 
 
           </Col>
+          <Col xs="auto"></Col>
+          <Col xs="3"></Col>
+        </Row>
+        <Row>
+          <Col xs="3"> 
+            <Link to = {{
+                              pathname : "/createPostType",
+                              props : {
+                                community : this.state.community
+                              }
+                            }} color="secondary">Create New Post Type</Link> 
+
+          </Col>
           <Col xs="auto">.col-auto - variable width content</Col>
           <Col xs="3">.col-3</Col>
         </Row>

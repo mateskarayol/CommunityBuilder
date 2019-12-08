@@ -17,9 +17,9 @@ class CreatePostType extends Component {
           
           community : props.location.props.community,
           form: {
-            postTypeName:'',
-            postTypeDesc:'',
-            postFields : [{  
+            name:'',
+            explanation:'',
+            postFieldSet : [{  
                             required : false,
                             fieldLabel : '',
                             fieldType : '',
@@ -79,8 +79,8 @@ class CreatePostType extends Component {
             {
                 form : {
                     ...this.state.form,
-                    postFields : [ 
-                                    ...this.state.form.postFields,
+                    postFieldSet : [ 
+                                    ...this.state.form.postFieldSet,
                                     {  
                                         required : false,
                                         fieldLabel : '',
@@ -101,13 +101,13 @@ class CreatePostType extends Component {
         const name = event.target.dataset.name;
         const value = event.target.value;
 
-        const updatedPostFields = [...this.state.form.postFields];
-        updatedPostFields[id][name] = value;
+        const updatedPostFieldSet = [...this.state.form.postFieldSet];
+        updatedPostFieldSet[id][name] = value;
 
         this.setState({
           form : {
             ...this.state.form,
-            postFields : updatedPostFields,       
+            postFieldSet : updatedPostFieldSet,       
           }
         });
      
@@ -119,15 +119,15 @@ class CreatePostType extends Component {
         // you should merge state !!!!
         const id = event.target.dataset.id;
 
-        const postFields = [...this.state.form.postFields];
+        const postFieldSet = [...this.state.form.postFieldSet];
 
-        postFields.splice(id, 1);
+        postFieldSet.splice(id, 1);
     
 
         this.setState({
           form : {
             ...this.state.form,
-            postFields : postFields     
+            postFieldSet : postFieldSet     
           }
         });   
     }
@@ -135,7 +135,7 @@ class CreatePostType extends Component {
 
   render(){
 
-    let postFields = this.state.form.postFields;
+    let postFieldSet = this.state.form.postFieldSet;
 
     return (
         <Form onSubmit =  {this.createPostTypeHandler}>
@@ -146,7 +146,7 @@ class CreatePostType extends Component {
             <Label for = "postTypeInp" sm={4} size="md">Post Type Name</Label>
             <Col sm={8}>
               <Input id = "postTypeInp" type = "text" 
-                    name = "postTypeName" 
+                    name = "name" 
                     value = {this.state.form.postTypeName} 
                     onChange = {this.inputChangeHandler}></Input>
             </Col>
@@ -157,7 +157,7 @@ class CreatePostType extends Component {
           <FormGroup row>
             <Col sm={12}>
               <Input id = "postTypeDescInp" type = "textarea" 
-                    name = "postTypeDesc" 
+                    name = "explanation" 
                     value = {this.state.form.communityDescription} 
                     onChange = {this.inputChangeHandler}></Input>
             </Col>
@@ -175,10 +175,10 @@ class CreatePostType extends Component {
             <Label sm={3} size="md"> Explanation </Label>
           </FormGroup>
           {
-              postFields.map((val, idx) =>  (
+              postFieldSet.map((val, idx) =>  (
                 <PostField
                         idx = {idx}
-                        postFieldArr = {postFields}
+                        postFieldArr = {postFieldSet}
                         postFieldChangeHandler = {this.postFieldChangeHandler}
                         postFieldDeleteHandler = {this.postFieldDeleteHandler}
                 />
