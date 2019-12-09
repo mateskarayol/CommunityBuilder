@@ -93,7 +93,7 @@ class CreatePostType extends Component {
                                     {  
                                         required : false,
                                         fieldLabel : '',
-                                        fieldType : 'TEXT',
+                                        fieldType : 'Select',
                                         explanation : '' 
                                     }
                                 ]
@@ -109,9 +109,16 @@ class CreatePostType extends Component {
         const id = event.target.dataset.id;
         const name = event.target.dataset.name;
         const value = event.target.value;
-
+        
         const updatedPostFieldSet = [...this.state.form.postFieldSet];
         updatedPostFieldSet[id][name] = value;
+
+        if(name == "fieldLabel"){
+          let key = value;
+          key = key.toLowerCase();
+          key = key.split(' ').join('_');
+          updatedPostFieldSet[id]["fieldKey"] = key;
+        }
 
         this.setState({
           form : {

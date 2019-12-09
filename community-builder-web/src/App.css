@@ -52,6 +52,10 @@
   margin: 5%;
 }
 
+.fiveMargin{
+  margin : 5%;
+}
+
 .communityBanner{
   display: flex;
   justify-content: center;

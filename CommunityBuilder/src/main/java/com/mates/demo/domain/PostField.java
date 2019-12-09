@@ -25,6 +25,10 @@ public class PostField {
 
 	@Getter
 	@Setter
+	private String fieldKey;
+
+	@Getter
+	@Setter
 	private String fieldLabel;
 
 	@Getter

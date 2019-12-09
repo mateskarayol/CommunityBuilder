@@ -25,6 +25,6 @@ public class Post {
 
 	@Getter
 	@Setter
-	private Map<Long, String> fieldValueMap;
+	private Map<String, String> fieldValueMap;
 
 }

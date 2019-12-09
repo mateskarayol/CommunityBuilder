@@ -32,7 +32,7 @@ class CreateCommunityForm extends Component {
             name : 'Basic Post',
             explanation : 'Basic post for general purposes',
             postFieldSet : [
-                                {
+                                { fieldKey : "message",
                                   required : false,
                                   fieldLabel : 'Message',
                                   fieldType : 'TEXT',
@@ -156,7 +156,7 @@ class CreateCommunityForm extends Component {
                                             props : {
                                               community : this.state.form
                                             }
-                                          }}/>)
+                                          }}/>);
     const createCommunityForm = (
       <div>
       <Form onSubmit =  {this.createCommunityHandler} >

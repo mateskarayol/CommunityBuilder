@@ -19,7 +19,7 @@ public class PostModelListener extends AbstractMongoEventListener<Post>{
 
 	@Override
 	public void onBeforeConvert(BeforeConvertEvent<Post> event) {
-		if (event.getSource().getId() < 1) {
+		if (event.getSource().getId() == null) {
 			event.getSource().setId(sequenceGenerator.generateSequence(Post.SEQUENCE_NAME));
 		}
 	}
