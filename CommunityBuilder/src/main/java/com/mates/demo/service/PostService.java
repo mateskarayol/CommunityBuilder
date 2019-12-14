@@ -14,4 +14,6 @@ public interface PostService {
 
 	public List<Post> searchPost(String keyword);
 
+	public List<Post> getPostsByCommunityId(Long communityId);
+
 	}

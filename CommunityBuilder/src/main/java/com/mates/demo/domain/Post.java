@@ -25,6 +25,11 @@ public class Post {
 
 	@Getter
 	@Setter
+	private Long communityId;
+
+
+	@Getter
+	@Setter
 	private Map<String, String> fieldValueMap;
 
 }

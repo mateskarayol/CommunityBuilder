@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { Input, Media, Container, Row, Col, Label} from 'reactstrap';
 import CreatePostType from './CreatePostType';
+import PostCard from "./PostCard";
 
 
 class CommunityHome extends Component {
@@ -15,9 +16,23 @@ class CommunityHome extends Component {
 
       community : props.location.props.community,
       showCreatePostType : false,
-      selectedPostType : 0
+      selectedPostType : 0,
+      postList : []
 
     }
+  }
+
+  componentDidMount(){
+    this.searchPost();
+  }
+
+
+  searchPost(){
+    
+    let url = `/getPostsByCommunityId?communityId=${this.state.community.id}`;
+
+    const response = fetch(url).then( response => response.json())
+                              .then( result => this.setState( { ...this.state, postList : result.response.postList }));
   }
 
   openCreatePostTypeHandler  = event => {
@@ -62,7 +77,6 @@ class CommunityHome extends Component {
           </Row>
       </Container>
       <Container className ="fiveMargin" >
-    
           <Row>
             <Col>
               <Label>Post Type : </Label>
@@ -82,14 +96,13 @@ class CommunityHome extends Component {
               <Link to = {{
                                 pathname : "/createPost",
                                 props : {
-                                  postType : this.state.selectedPostType
+                                  postType : this.state.selectedPostType,
+                                  community : this.state.community
                                 }
                               }} color="secondary">Create New Post</Link> 
 
             </Col>
           </Row>
-
-
           <Row>
             <Col xs="3"> 
               <Link to = {{
@@ -103,7 +116,9 @@ class CommunityHome extends Component {
             <Col xs="auto"></Col>
             <Col xs="3"></Col>
           </Row>
-
+        </Container>
+        <Container>
+          <PostCard postList = {this.state.postList}></PostCard>
         </Container>
       </div>
       );

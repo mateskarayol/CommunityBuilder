@@ -14,5 +14,6 @@ public interface PostRepository extends MongoRepository<Post, Long>  {
 	@Query("{'name': {$regex: ?0, $options:'i' }})")
 	public List<Post> findByQuery(String keyword);
 
+	public List<Post> findByCommunityId(Long communityId);
 
 }

@@ -40,5 +40,9 @@ public class PostServiceImpl implements PostService {
 		return postRepository.findByQuery(keyword);
 	}
 
+	@Override
+	public List<Post> getPostsByCommunityId(Long communityId){
+		return postRepository.findByCommunityId(communityId);
+	}
 
 }
