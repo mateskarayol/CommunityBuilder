@@ -5,8 +5,8 @@ import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import LocationPicker from 'react-location-picker';
 import ImageUploader from 'react-images-upload';
-import ReactTags from 'react-tag-autocomplete'
-
+import ReactTags from 'react-tag-autocomplete';
+import { Redirect } from 'react-router-dom';
 
 class CreatePost extends Component {
 
@@ -17,8 +17,7 @@ class CreatePost extends Component {
         this.createPostHandler = this.createPostHandler.bind(this);
         this.createPostTypeComponentHandler = this.createPostTypeComponentHandler.bind(this);
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
-        this.dateChangeHandler = this.dateChangeHandler.bind(this);
-        this.timeChangeHandler = this.timeChangeHandler.bind(this);
+        this.dateTimeChangeHandler = this.dateTimeChangeHandler.bind(this);
         this.locationChangeHandler = this.locationChangeHandler.bind(this);
         this.imageChangeHandler = this.imageChangeHandler.bind(this);
         this.choiceAddHandler = this.choiceAddHandler.bind(this);
@@ -29,18 +28,18 @@ class CreatePost extends Component {
         this.state = {
           
           postType : props.location.props.postType,
-          communityId : props.location.props.communityId,
+          community : props.location.props.community,
           form: {
               post : {
-                      postTypeId : '',
-                      fieldValueMap :  {
-                                        fieldLabel : '',
-                                        fieldValue : '',
-                                      }
+                      communityId : props.location.props.community.id,
+                      postTypeId : props.location.props.postType.id,
+                      fieldValueMap :  {}
                       }
                 },
           pictures: [],
-          result : ''
+          result : '',
+          showCommunityHome : false,
+          selectedDate : new Date()
         }
       }
 
@@ -51,6 +50,7 @@ class CreatePost extends Component {
       console.log(a);
 
       const postData = this.state.form;
+      console.log(this.state.selectedDate);
   
       const url = "/savePost"
   
@@ -59,13 +59,7 @@ class CreatePost extends Component {
                     headers:{ "Content-Type": "application/json" } 
                   })
                   .then( response => response.json())
-                  .then( result  => {  this.setState({
-                                                  ...this.state,
-                                                  form : result.response.post
-                                              });
-                                  this.redirectToCommunityHome();
-                                }
-                  );
+                  .then( this.redirectToCommunityHome());
       // result.response buradaki response response objelerinin içerisindeki attribute name  
       
       var message = `Community is created successfully.` ;
@@ -73,12 +67,9 @@ class CreatePost extends Component {
       console.log(message);
       this.setState( { result: message , showMessage : true }) ;
 
-
-
-
-
-
     }
+
+
     redirectToCommunityHome (){
       this.setState({
         ...this.state,
@@ -103,12 +94,14 @@ class CreatePost extends Component {
     // you should merge state !!!!
     const name = event.target.name;
     const value = event.target.value;
+
     this.setState({
       form : {
         ...this.state.form,
         post : {
           ...this.state.form.post,
           fieldValueMap : {
+            ...this.state.form.post.fieldValueMap,
             [name]: value,
           }
         }
@@ -116,13 +109,21 @@ class CreatePost extends Component {
       result : ''
     });
   }
-
-  dateChangeHandler = event => {
-
-  }
-
-  timeChangeHandler = event => {
-    
+ 
+  dateTimeChangeHandler = (name, value) => {
+    this.setState({
+      form : {
+        ...this.state.form,
+        post : {
+          ...this.state.form.post,
+          fieldValueMap : {
+            ...this.state.form.post.fieldValueMap,
+            [name]: value,
+          }
+        }
+      },
+      result : ''
+    });
   }
 
   locationChangeHandler = event => {
@@ -145,13 +146,12 @@ class CreatePost extends Component {
 
   createPostTypeComponentHandler(field) {
 
-    let type = field.fieldType;
-    let valueId = `this.state.form.post.postFieldSet.${field.fieldKey}`;
-    
+    let type = field.fieldType; 
+    let key = field.fieldKey;   
     /*--------------------------------------------*/
     /* Constant values for components             */
     /*--------------------------------------------*/
-    const startDate = new Date();
+    const selectedDate = new Date();
     const defaultPosition = {
       lat: 27.9878,
       lng: 86.9250
@@ -162,70 +162,60 @@ class CreatePost extends Component {
     /*-------------------------------------------*/
     switch(type) {
       case 'TEXT':
-        return <Input id = {field.fieldKey} type = "text" 
-                      name = {field.fieldKey} 
-                      value = {this.state.form.post.fieldValueMap[field.fieldKey]} 
+        return <Input id = {key} type = "text" 
+                      name = {key}  
+                      value = {this.state.form.post.fieldValueMap[key]} 
                       onChange = {this.inputChangeHandler}></Input>;
       case 'NUMBER':
-        return <Input id = {field.fieldKey} type = "number" 
-                      name = {field.fieldKey} 
-                      value = {valueId}
+        return <Input id = {key} type = "number" 
+                      name = {key} 
+                      value = {this.state.form.post.fieldValueMap[key]}
                       onChange = {this.inputChangeHandler}></Input>;
       case 'DECIMAL':
-        return <Input id = {field.fieldKey} type = "number" 
-                      name = {field.fieldKey} 
-                      value = {valueId}
+        return <Input id = {key} type = "number" 
+                      name = {key} 
+                      value = {this.state.form.post.fieldValueMap[key]}
                       onChange = {this.inputChangeHandler}></Input>;
-      case 'DATE':
-        return  <DatePicker
-                      showPopperArrow={false}
-                      selected = {startDate}
-                      onChange={this.dateChangeHandler}
-                    />;
-      case 'TIME':
-        return <DatePicker
-                      selected={startDate}
-                      onChange={this.timeChangeHandler}
-                      showTimeSelect
-                      showTimeSelectOnly
-                      timeIntervals={15}
-                      timeCaption="Time"
-                      dateFormat="h:mm aa"
-                    />
+      case 'DATETIME':
+        return  <DatePicker id = {key}
+                            name = {key}
+                            showTimeSelect
+                            timeFormat="HH:mm"
+                            timeIntervals={30}
+                            timeCaption="Time"
+                            dateFormat = "dd/MM/yyyy HH:mm"
+                            selected = {this.state.form.post.fieldValueMap[key]}
+                            onChange = {this.dateTimeChangeHandler.bind(this, key)}
+                          />;
       case 'LOCATION':
-        return (<div>
-                  <LocationPicker
-                      containerElement={ <div style={ {height: '100%'} } /> }
-                      mapElement={ <div style={ {height: '400px'} } /> }
-                      defaultPosition={defaultPosition}
-                      onChange={this.locationChangeHandler}
-                  />
-                </div>);
+        return <LocationPicker  id = {key}
+                          name = {key}
+                          containerElement={ <div style={ {height: '100%'} } /> }
+                          mapElement={ <div style={ {height: '400px'} } /> }
+                          defaultPosition={defaultPosition}
+                          onChange={this.locationChangeHandler}
+                      />;
       case 'URI':
-          return <Input id = {field.fieldKey} type = "text" 
-                      name = {field.fieldKey} 
-                      value = {valueId} 
-                      onChange = {this.inputChangeHandler}></Input>;
+        return <Input id = {key} type = "text" 
+                          name = {key} 
+                          value = {this.state.form.post.fieldValueMap[key]}
+                          onChange = {this.inputChangeHandler}></Input>;
       case 'IMAGE':
-            return <ImageUploader
-                      withIcon={true}
-                      buttonText='Choose images'
-                      onChange={this.imageChangeHandler}
-                      imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                      maxFileSize={5242880}
-                  />;
+        return <ImageUploader id = {key}
+                          name = {key}
+                          withIcon={true}
+                          buttonText='Choose images'
+                          onChange={this.imageChangeHandler}
+                          imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                          maxFileSize={5242880}
+                      />;
       case 'CHOICE':
-        return  <div>
-                    <Input id = {field.fieldKey} type = "text" 
-                      name = {field.fieldKey} 
-                      value = {valueId} 
-                      onChange = {this.inputChangeHandler}></Input>;;
-                    <ReactTags
-                      tags={this.state.tags}
-                      suggestions={this.state.suggestions}
-                      handleDelete={this.choiceDeleteHandler.bind(this)}
-                      handleAddition={this.choiceAddHandler.bind(this)} />
-                </div>;
+        let optionList = field.choiceFieldSet;
+        return  <Input type="select" name={key}  id={key} onChange = {this.inputChangeHandler} >
+                  {
+                    optionList.map((idx,val) => ( <option value = {this.state.form.post.fieldValueMap[key]} >{field.choiceFieldSet[val]}</option>))
+                  }
+                  </Input>;
       default:
         return null;
     }
@@ -236,29 +226,41 @@ class CreatePost extends Component {
 
     let postType = this.state.postType;
     let postFieldSet = this.state.postType.postFieldSet;
+
+    let communityHome = '';
+    let createPostForm = '';
+
     
-    return (
-        <Form onSubmit =  {this.createPostHandler}>
+    if(this.state.showCommunityHome)
+      communityHome = (<Redirect to={{  pathname : "/communityHome",
+                                            props : {
+                                              community : this.state.community
+                                            }
+                                          }}/>); 
+    else
+      createPostForm = ( <Form onSubmit =  {this.createPostHandler}>
+                                <FormGroup row>
+                                  <Label  sm={6} size="lg">{postType.name}</Label>
+                                  <Label  sm={6} size="md">{postType.explanation}</Label>
+                                </FormGroup>
 
-          <FormGroup row>
-            <Label  sm={6} size="lg">{postType.name}</Label>
-            <Label  sm={6} size="md">{postType.explanation}</Label>
-          </FormGroup>
+                                {
+                                    postFieldSet.map((val, idx) =>  (
+                                      <FormGroup row key={idx}>
+                                        <Label sm={4} size="md"> {postFieldSet[idx].fieldLabel} </Label>
+                                        <Col sm={8}>
+                                          {this.createPostTypeComponentHandler(postFieldSet[idx])}
+                                        </Col>
+                                      </FormGroup>
+                                    ))  
+                                }
+                                <Button color = "success" >Create Post</Button>  
+                              </Form>
+                        
+                            ); 
 
-          {
-              postFieldSet.map((val, idx) =>  (
-                <FormGroup row>
-                  <Label sm={4} size="md"> {postFieldSet[idx].fieldLabel} </Label>
-                  <Col sm={8}>
-                    {this.createPostTypeComponentHandler(postFieldSet[idx])}
-                  </Col>
-                </FormGroup>
-              ))  
-          }
-          <Button color = "success" >Create Post</Button>  
-        </Form>
-  
-      );
+    return ( this.state.showCommunityHome ? communityHome : createPostForm);
+
   }
 }
 export default CreatePost;

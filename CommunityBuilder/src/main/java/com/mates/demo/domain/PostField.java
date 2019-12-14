@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
+import java.util.Set;
+
 public class PostField {
 
 	@Transient
@@ -38,5 +40,9 @@ public class PostField {
 	@Getter
 	@Setter
 	private String explanation;
+
+	@Getter
+	@Setter
+	private Set<String>  choiceFieldSet;
 
 }

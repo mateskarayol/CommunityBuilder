@@ -8,11 +8,17 @@ class CreatePostType extends Component {
 
     constructor( props ) {
         super();
+
+        /**-----------------------------------------------------------------*/
+        /** Bindings                                                        */
+        /** ----------------------------------------------------------------*/
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.addNewField = this.addNewField.bind(this);
         this.postFieldChangeHandler = this.postFieldChangeHandler.bind(this);
         this.postFieldDeleteHandler = this.postFieldDeleteHandler.bind(this);
         this.createPostTypeHandler = this.createPostTypeHandler.bind(this);
+        this.choiceFieldAddHandler = this.choiceFieldAddHandler.bind(this);
+        this.choiceFieldChangeHandler = this.choiceFieldChangeHandler.bind(this);
 
     
         this.state = {
@@ -33,19 +39,19 @@ class CreatePostType extends Component {
         }
       }
 
+    /**----------------------------------------------------- */
+    /** HANDLERS                                             */
+    /**----------------------------------------------------- */
     createPostTypeHandler = event => {
-    
       event.preventDefault();
-
       let communitydata = this.state.community;
       let postType =  this.state.form;
-      communitydata.postTypeSet.push(postType);
 
-    
+      communitydata.postTypeSet.push(postType);
+      
       const requestbody = {
         "community" :  this.state.community
       }
-
 
       const url = "/saveCommunity";
 
@@ -62,12 +68,8 @@ class CreatePostType extends Component {
                                       }
                   );
       // result.response buradaki response response objelerinin içerisindeki attribute name  
-      
-      var message = `Post type is added successfully.` ;
-
-      console.log(message);
-
     
+      var message = `Post type is added successfully.` ;    
     }
 
     inputChangeHandler = event => {
@@ -103,9 +105,6 @@ class CreatePostType extends Component {
     }
 
     postFieldChangeHandler = event => {
-
-        // event.target returns the <input/> component 
-        // you should merge state !!!!
         const id = event.target.dataset.id;
         const name = event.target.dataset.name;
         const value = event.target.value;
@@ -113,11 +112,19 @@ class CreatePostType extends Component {
         const updatedPostFieldSet = [...this.state.form.postFieldSet];
         updatedPostFieldSet[id][name] = value;
 
-        if(name == "fieldLabel"){
+        if(name == 'fieldLabel'){
           let key = value;
           key = key.toLowerCase();
           key = key.split(' ').join('_');
-          updatedPostFieldSet[id]["fieldKey"] = key;
+          updatedPostFieldSet[id]['fieldKey'] = key;
+        }
+
+        if(name == 'fieldType'){
+            if( value == 'CHOICE'){
+              updatedPostFieldSet[id].showChoiceField = true;
+              updatedPostFieldSet[id].choiceField = '';
+              updatedPostFieldSet[id].choiceFieldSet = [];
+            }
         }
 
         this.setState({
@@ -129,17 +136,44 @@ class CreatePostType extends Component {
      
     }
 
-    postFieldDeleteHandler = event => {
+    choiceFieldAddHandler = event => {
+      const id = event.target.dataset.id;
+      
 
-        // event.target returns the <input/> component 
-        // you should merge state !!!!
+      const updatedPostFieldSet = [...this.state.form.postFieldSet];
+      let option = updatedPostFieldSet[id].choiceField;
+      updatedPostFieldSet[id].choiceFieldSet.push(option);
+
+      this.setState({
+        form : {
+          ...this.state.form,
+          postFieldSet : updatedPostFieldSet,       
+        }
+      });
+    }
+
+    choiceFieldChangeHandler = event => {
         const id = event.target.dataset.id;
+        const name = event.target.dataset.name;
+        const value = event.target.value;
+        
+        const updatedPostFieldSet = [...this.state.form.postFieldSet];
+        updatedPostFieldSet[id][name] = value;
+        updatedPostFieldSet[id].choiceField = value;
 
-        const postFieldSet = [...this.state.form.postFieldSet];
-
-        postFieldSet.splice(id, 1);
     
+        this.setState({
+          form : {
+            ...this.state.form,
+            postFieldSet : updatedPostFieldSet,       
+          }
+        });
+    }
 
+    postFieldDeleteHandler = event => {
+        const id = event.target.dataset.id;
+        const postFieldSet = [...this.state.form.postFieldSet];
+        postFieldSet.splice(id, 1);
         this.setState({
           form : {
             ...this.state.form,
@@ -155,8 +189,9 @@ class CreatePostType extends Component {
       })
     }
   
-
-
+  /**--------------------------------------------- */
+  /** RENDER PAGE                                  */
+  /**--------------------------------------------- */
   render(){
 
     let postFieldSet = this.state.form.postFieldSet;
@@ -211,6 +246,9 @@ class CreatePostType extends Component {
                         postFieldArr = {postFieldSet}
                         postFieldChangeHandler = {this.postFieldChangeHandler}
                         postFieldDeleteHandler = {this.postFieldDeleteHandler}
+                        choiceFieldAddHandler = {this.choiceFieldAddHandler}
+                        choiceFieldChangeHandler = {this.choiceFieldChangeHandler}
+                        showChoiceField = {postFieldSet[idx].showChoiceField}
                 />
               ))  
           }
