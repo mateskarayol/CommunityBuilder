@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
+import java.util.Set;
 
 @Document(collection = "Post")
 public class Post {
@@ -31,5 +32,9 @@ public class Post {
 	@Getter
 	@Setter
 	private Map<String, String> fieldValueMap;
+
+	@Getter
+	@Setter
+	private Set<SemanticTag> semanticTagSet;
 
 }

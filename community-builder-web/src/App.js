@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Homepage from './forms/Homepage';
-import { Route, Switch, Link } from "react-router-dom";
+import { Router, Route, Switch, Link } from "react-router-dom";
 import CreateCommunityForm  from "./forms/CreateCommunityForm";
 import CreatePostType  from "./forms/CreatePostType";
 import ListCommunitiesForm  from "./forms/ListCommunitiesForm";
@@ -27,7 +27,7 @@ class App extends Component {
           </div>
         </header>
         <footer>
-          <Switch>
+          <Router>
               <Route  exact 
                       path="/" 
                       component={Homepage} />
@@ -53,7 +53,7 @@ class App extends Component {
 
             
 
-          </Switch>
+          </Router>
         </footer>
       </div>
     );

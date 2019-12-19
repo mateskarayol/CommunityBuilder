@@ -217,7 +217,7 @@ class CreatePostType extends Component {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label sm={12} size="md"> Why people use this post type ?</Label>
+            <Label sm={12} size="md"> Why do people use this post type ?</Label>
           </FormGroup>
           <FormGroup row>
             <Col sm={12}>

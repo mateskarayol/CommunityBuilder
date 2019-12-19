@@ -8,6 +8,9 @@ import ImageUploader from 'react-images-upload';
 import ReactTags from 'react-tag-autocomplete';
 import { Redirect } from 'react-router-dom';
 
+
+
+
 class CreatePost extends Component {
 
     constructor( props ) {
@@ -23,52 +26,121 @@ class CreatePost extends Component {
         this.choiceAddHandler = this.choiceAddHandler.bind(this);
         this.choiceDeleteHandler = this.choiceDeleteHandler.bind(this);
         this.redirectToCommunityHome = this.redirectToCommunityHome.bind(this);
+        this.postNameChangeHandler = this.postNameChangeHandler.bind(this);
+        this.updateWikiSuggestions = this.updateWikiSuggestions.bind(this);
         
         /* State */
-        this.state = {
-          
+        this.state = {          
           postType : props.location.props.postType,
           community : props.location.props.community,
           form: {
               post : {
                       communityId : props.location.props.community.id,
                       postTypeId : props.location.props.postType.id,
-                      fieldValueMap :  {}
-                      }
-                },
+                      fieldValueMap :  {},
+                      semanticTagSet : []
+                    }
+          },
           pictures: [],
           result : '',
           showCommunityHome : false,
-          selectedDate : new Date()
+          selectedDate : new Date(),
+          tags: [],
+          suggestions: []
         }
       }
 
     // To save post
     createPostHandler = event => {
       event.preventDefault();
-      const a = this.state.form;
-      console.log(a);
+      let tags = this.state.tags;
+      let updatedSemanticTagSet = [];
+      
+      tags.map((val,idx) => {
+        updatedSemanticTagSet.push( {
+          code :tags[idx].id, 
+          label : tags[idx].name.split("|")[0].split(":")[1].trim(),
+          description : tags[idx].name.split("|")[1].split(":")[1].trim(),
+        });
+      });
 
+      this.setState({ 
+        ...this.state,
+        form : {
+          ...this.state.form,
+          post : {
+            ...this.state.form.post,
+            semanticTagSet : updatedSemanticTagSet
+          }
+        }
+      }, () => {
+        this.createPost();
+      });
+    }
+
+    createPost(){
       const postData = this.state.form;
-      console.log(this.state.selectedDate);
-  
       const url = "/savePost"
-  
       fetch(url, {  method: "POST", 
                     body: JSON.stringify(postData), 
                     headers:{ "Content-Type": "application/json" } 
                   })
                   .then( response => response.json())
                   .then( this.redirectToCommunityHome());
-      // result.response buradaki response response objelerinin içerisindeki attribute name  
       
-      var message = `Community is created successfully.` ;
-  
-      console.log(message);
+      var message = `Post is created successfully.` ;
       this.setState( { result: message , showMessage : true }) ;
-
+    }
+    
+    handleDelete (i) {
+      const { tags } = this.state;
+      this.setState({
+        tags: tags.filter((tag, index) => index !== i),
+      });
+    }
+  
+    handleAddition (tag) {
+ 
+      this.setState(state => ({ tags: [...state.tags, tag] }));
     }
 
+    updateWikiSuggestions(wikiSearchList){
+      let list = [];
+      wikiSearchList.map((val,idx) => {
+        list.push( {
+          id : wikiSearchList[idx].id,
+          name : "Tag : " + wikiSearchList[idx].label + " | Description : " + wikiSearchList[idx].description ,
+
+        } )
+      });
+      this.setState({ ...this.state, 
+        suggestions : list
+      });
+    }
+
+    postNameChangeHandler =  event => {
+      const name = event.target.name;
+      const value = event.target.value;
+
+      this.setState({
+        form : {
+          ...this.state.form,
+          post : {
+            ...this.state.form.post,
+            fieldValueMap : {
+              ...this.state.form.post.fieldValueMap,
+              [name]: value,
+            }
+          }
+        }
+      });
+    
+      const url =`/getWikiDataByTitle?wikiKeyword=${value}`;
+      fetch(url).then( response => response.json())
+                  .then( result => { this.updateWikiSuggestions(result.search) });
+    }
+
+    
 
     redirectToCommunityHome (){
       this.setState({
@@ -161,6 +233,17 @@ class CreatePost extends Component {
     /* Return different components based on type */
     /*-------------------------------------------*/
     switch(type) {
+      case 'POSTNAME' :
+        return <Input id = {key} type = "text" 
+                      name = {key}  
+                      value = {this.state.form.post.fieldValueMap[key]} 
+                      onBlur = {this.postNameChangeHandler}></Input>; 
+      case 'SEMANTICTAG' :
+        return <ReactTags tags={this.state.tags}
+                          suggestions={this.state.suggestions}
+                          handleDelete={this.handleDelete.bind(this)}
+                          handleAddition={this.handleAddition.bind(this)}
+                        />;
       case 'TEXT':
         return <Input id = {key} type = "text" 
                       name = {key}  
@@ -254,6 +337,7 @@ class CreatePost extends Component {
                                       </FormGroup>
                                     ))  
                                 }
+                                
                                 <Button color = "success" >Create Post</Button>  
                               </Form>
                         

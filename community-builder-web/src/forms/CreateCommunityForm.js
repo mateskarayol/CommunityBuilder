@@ -32,11 +32,23 @@ class CreateCommunityForm extends Component {
             name : 'Basic Post',
             explanation : 'Basic post for general purposes',
             postFieldSet : [
+                                { fieldKey : "post_name",
+                                  required : false,
+                                  fieldLabel : 'Post Name',
+                                  fieldType : 'POSTNAME',
+                                  explanation : 'Post Name'
+                                },
                                 { fieldKey : "message",
                                   required : false,
                                   fieldLabel : 'Message',
                                   fieldType : 'TEXT',
                                   explanation : 'Message'
+                                },
+                                { fieldKey : "semantic_tag",
+                                  required : false,
+                                  fieldLabel : 'Tags',
+                                  fieldType : 'SEMANTICTAG',
+                                  explanation : 'Tags'
                                 }
                               ]
           }
