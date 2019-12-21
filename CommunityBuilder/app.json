@@ -1,0 +1,6 @@
+{
+  "name": "CommunityBuilder",
+  "description": "CommunityBuilderApplication",
+  "repository": "https://github.com/mateskarayol/software-development-practice/tree/master/CommunityBuilder",
+  "image": "heroku/java"
+}
