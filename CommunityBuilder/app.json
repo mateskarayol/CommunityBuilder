@@ -2,5 +2,13 @@
   "name": "CommunityBuilder",
   "description": "CommunityBuilderApplication",
   "repository": "https://github.com/mateskarayol/software-development-practice/tree/master/CommunityBuilder",
-  "image": "heroku/java"
+  "image": "heroku/java",
+  "buildpacks": [
+    {
+      "url": "https://github.com/mateskarayol/software-development-practice/tree/master/CommunityBuilder"
+    },
+    {
+      "url": "heroku/java"
+    }
+  ]
 }
