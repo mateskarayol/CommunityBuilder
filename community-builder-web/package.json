@@ -19,6 +19,10 @@
     "react-tag-input": "^6.4.1",
     "reactstrap": "^8.1.1"
   },
+  "engines": {
+    "npm": "5.7.1",
+    "node": "9.5.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

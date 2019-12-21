@@ -44,6 +44,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -109,22 +115,14 @@
             <artifactId>wdtk-wikibaseapi</artifactId>
             <version>${wikidata.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-            <version>3.0.2.Final</version>
-        </dependency>
+
 
 
     </dependencies>
@@ -153,10 +151,11 @@
                 <configuration>
                     <appName>community-builder-prj</appName>
                     <configVars>
+                        <PORT>8080</PORT>
                         <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
                     </configVars>
                     <processTypes>
-                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* DemoApplication</web>
+                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* com.mates.demo.DemoApplication</web>
                     </processTypes>
                     <buildpacks>
                         <buildpack>https://github.com/mcollina/heroku-buildpack-imagemagick</buildpack>
