@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { Input, Media, Container, Row, Col, Label} from 'reactstrap';
+import { Input, Media, Container, Row, Col, Label, Button} from 'reactstrap';
 import CreatePostType from './CreatePostType';
 import PostCard from "./PostCard";
 
+import { withRouter } from 'react-router-dom';
 
 class CommunityHome extends Component {
 
@@ -11,9 +12,8 @@ class CommunityHome extends Component {
     super();
     this.openCreatePostTypeHandler.bind(this.openCreatePostTypeHandler);
     this.postTypeChangeHandler.bind(this.postTypeChangeHandler);
-
+ 
     this.state = {
-
       community : props.location.props.community,
       showCreatePostType : false,
       selectedPostType : 0,
@@ -21,11 +21,6 @@ class CommunityHome extends Component {
 
     }
   }
-
-  componentDidMount(){
-    this.searchPost();
-  }
-
 
   searchPost(){
     
@@ -57,6 +52,8 @@ class CommunityHome extends Component {
  
 
   render(){
+
+    this.searchPost();
     const postTypeSet = this.state.community.postTypeSet;
     const communityHome = (
     <div>
@@ -65,6 +62,9 @@ class CommunityHome extends Component {
             <Col></Col>
             <Col className="centeredText">  <h2>{this.state.community.name}</h2> </Col>
             <Col></Col>
+          </Row>
+          <Row>
+            
           </Row>
           <Row className="communityBanner">
             <Col></Col>
@@ -77,11 +77,26 @@ class CommunityHome extends Component {
           </Row>
       </Container>
       <Container className ="fiveMargin" >
+          <Row >
+            <Col sm ={4}>
+              <Link to = {{ pathname : "/createPostType",
+                            props : {
+                              community : this.state.community
+                            }
+                          }} color="secondary">
+                          <Button color="primary">Create New Post Type</Button>
+             </Link> 
+            </Col>
+          </Row>
+        </Container>
+        <Container>
           <Row>
             <Col>
-              <Label>Post Type : </Label>
+              <Label>In order to create new post; </Label>
             </Col>
-            <Col>
+          </Row>
+          <Row>
+            <Col sm={3}>
               <Input type="select" name="select" onChange = {this.postTypeChangeHandler} >
                 <option data-id = "0" > Select Post Type </option>
                   {
@@ -91,31 +106,19 @@ class CommunityHome extends Component {
                   }
               </Input>
             </Col>
-            
-            <Col xs="3"> 
-              <Link to = {{
-                                pathname : "/createPost",
-                                props : {
-                                  postType : this.state.selectedPostType,
-                                  community : this.state.community
-                                }
-                              }} color="secondary">Create New Post</Link> 
+            <Col sm={4}> 
+              <Link to = {{ pathname : "/createPost",
+                            props : {
+                              postType : this.state.selectedPostType,
+                              community : this.state.community
+                            }
+                          }} color="secondary">
+                          <Button color="primary">Create New Post</Button>
+              </Link> 
 
             </Col>
           </Row>
-          <Row>
-            <Col xs="3"> 
-              <Link to = {{
-                                pathname : "/createPostType",
-                                props : {
-                                  community : this.state.community
-                                }
-                              }} color="secondary">Create New Post Type</Link> 
-
-            </Col>
-            <Col xs="auto"></Col>
-            <Col xs="3"></Col>
-          </Row>
+         
         </Container>
         <Container>
           <PostCard postList = {this.state.postList}></PostCard>

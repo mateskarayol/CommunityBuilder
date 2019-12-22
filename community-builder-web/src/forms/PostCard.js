@@ -13,7 +13,7 @@ const PostCard = ({ postList, showHandler}) => {
         <CardColumns>
             {
                 postList.map((val, idx) =>  (
-                    <PostCardInfo item = {postList[idx].fieldValueMap}></PostCardInfo>
+                    <PostCardInfo item = {postList[idx].fieldValueMap} ></PostCardInfo>
                 ))
             }
         </CardColumns>
@@ -22,11 +22,18 @@ const PostCard = ({ postList, showHandler}) => {
 };
 
 const PostCardInfo = ({item, id}) => {
-
+  let post_name =  '';
   return (
     
       <Card>
-          <CardHeader tag="h6">POST</CardHeader>
+        {
+              Object.keys(item).map(function(key){
+                if (key == 'post_name'){
+                  post_name = item[key];
+                }
+              })
+            }
+          <CardHeader tag="h6">{post_name}</CardHeader>
           <CardBody>
             {
               Object.keys(item).map(function(key){

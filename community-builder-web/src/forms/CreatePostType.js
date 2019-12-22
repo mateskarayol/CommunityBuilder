@@ -27,12 +27,34 @@ class CreatePostType extends Component {
           form: {
             name:'',
             explanation:'',
-            postFieldSet : [{  
-                            required : false,
+            postFieldSet :[
+                          { fieldKey : "post_name",
+                            required : true,
+                            fieldLabel : 'Post Name',
+                            fieldType : 'POSTNAME',
+                            explanation : 'Post Name',
+                            default : true
+                          },
+                          { fieldKey : "message",
+                            required : true,
+                            fieldLabel : 'Message',
+                            fieldType : 'TEXT',
+                            explanation : 'Message',
+                            default : true
+                          },
+                          { fieldKey : "semantic_tag",
+                            required : true,
+                            fieldLabel : 'Tags',
+                            fieldType : 'SEMANTICTAG',
+                            explanation : 'Tags',
+                            default : true
+                          },
+                          {  
+                            required : true,
                             fieldLabel : '',
                             fieldType : '',
                             explanation : '' 
-                        }]
+                        }]    
           },
           result : '',
           showCommunityHome : false

@@ -146,12 +146,6 @@ class CreateCommunityForm extends Component {
     });
   }
 
-  addPostType = event => {
-    this.setState({
-      createPost : true
-    });
-  }
-
   redirectToCommunityHome (){
     this.setState({
       ...this.state,
@@ -210,12 +204,7 @@ class CreateCommunityForm extends Component {
 
             </ListGroup>
           }
-        </FormGroup>
-
-        <FormGroup row>
-          <Col sm={12}>
-            <Button onClick = {this.addPostType} > Add  New Post Type </Button>
-          </Col>
+           <Label for = "bannerPicInp" sm={4} size="md">Basic Post Type is created as default. You can create more post types later.</Label>
         </FormGroup>
 
         { this.state.createPost && <CreatePostType savePostTypeHandler = {this.savePostTypeHandler} /> }
