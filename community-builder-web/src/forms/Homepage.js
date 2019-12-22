@@ -25,23 +25,19 @@ class Homepage extends Component {
       <div>
         <div className="homeBody">
             
-            <h2>Attend to a community </h2>
+      
             <br/>
-            <InputGroup>
-              <Input type = "text" name = "keyword" sm={5} 
-                value = {this.state.keyword}   
-                onChange = {this.inputChangeHandler} 
-                placeholder = "Search community"> </Input>
-              <InputGroupAddon addonType="append"><Button color="success">Search</Button></InputGroupAddon>
-            </InputGroup>
-            
+            <Link to = "/listCommunities">
+              <Button color="success">List Communities</Button>
+            </Link>  
             <br/>
-            
+            <br/>
             <h2>or</h2>
             <br/>
-            <Link to = "/listCommunities" color="secondary">List Communities</Link>  
             <br/>
-            <Link to = "/createCommunity" color="secondary">Create New Community</Link>  
+            <Link to = "/createCommunity" >
+              <Button color="success">Create New Community</Button>
+            </Link>  
         
         </div>   
       </div>    
