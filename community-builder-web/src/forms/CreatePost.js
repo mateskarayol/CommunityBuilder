@@ -104,17 +104,25 @@ class CreatePost extends Component {
       this.setState(state => ({ tags: [...state.tags, tag] }));
     }
 
-    updateWikiSuggestions(wikiSearchList){
-      let list = [];
-      wikiSearchList.map((val,idx) => {
-        list.push( {
-          id : wikiSearchList[idx].id,
-          name : "Tag : " + wikiSearchList[idx].label + " | Description : " + wikiSearchList[idx].description ,
+    updateWikiSuggestions(value){
 
-        } )
-      });
-      this.setState({ ...this.state, 
-        suggestions : list
+      value.split(' ').forEach(keyword => {     
+        const url =`/getWikiDataByTitle?wikiKeyword=${keyword}`;
+        fetch(url).then( response => response.json())
+                  .then( result => {  
+                                      let list = [...this.state.suggestions];
+                                      result.search.map((val,idx) => {
+                                        list.push( {
+                                          id : result.search[idx].id,
+                                          name : "Tag : " + result.search[idx].label + " | Description : " + result.search[idx].description ,
+
+                                        } )
+                                      });
+                                      this.setState({ ...this.state, 
+                                        suggestions : list
+                                      });
+
+        });
       });
     }
 
@@ -135,9 +143,7 @@ class CreatePost extends Component {
         }
       });
     
-      const url =`/getWikiDataByTitle?wikiKeyword=${value}`;
-      fetch(url).then( response => response.json())
-                  .then( result => { this.updateWikiSuggestions(result.search) });
+      this.updateWikiSuggestions(value);
     }
 
     
@@ -233,11 +239,6 @@ class CreatePost extends Component {
     /* Return different components based on type */
     /*-------------------------------------------*/
     switch(type) {
-      case 'POSTNAME' :
-        return <Input id = {key} type = "text" 
-                      name = {key}  
-                      value = {this.state.form.post.fieldValueMap[key]} 
-                      onBlur = {this.postNameChangeHandler}></Input>; 
       case 'SEMANTICTAG' :
         return <ReactTags tags={this.state.tags}
                           suggestions={this.state.suggestions}
@@ -245,10 +246,17 @@ class CreatePost extends Component {
                           handleAddition={this.handleAddition.bind(this)}
                         />;
       case 'TEXT':
-        return <Input id = {key} type = "text" 
+        return ( key == 'post_name' ? 
+                        <Input id = {key} type = "text" 
+                        name = {key}  
+                        value = {this.state.form.post.fieldValueMap[key]} 
+                        onBlur = {this.postNameChangeHandler}></Input>
+                      :
+                        <Input id = {key} type = "text" 
                       name = {key}  
                       value = {this.state.form.post.fieldValueMap[key]} 
-                      onChange = {this.inputChangeHandler}></Input>;
+                      onChange = {this.inputChangeHandler}></Input>
+                    )
       case 'NUMBER':
         return <Input id = {key} type = "number" 
                       name = {key} 

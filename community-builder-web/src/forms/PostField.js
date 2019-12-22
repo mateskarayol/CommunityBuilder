@@ -23,10 +23,10 @@ const PostField = ({    idx,
                             data-id = {idx}
                             data-name = "required"
                             name = {reqId} 
-                            value = {postFieldArr[idx].required}
+                            value = {true}
                             onChange = {postFieldChangeHandler} 
                             className = "centeredCheck"
-                            disabled></Input> 
+                            disabled checked></Input> 
                         : 
                         <Input type = "checkbox" 
                             data-id = {idx}
@@ -108,9 +108,7 @@ const PostField = ({    idx,
                 </Col>
                 <Col sm={1}>
                     { postFieldArr[idx].default ?
-                    <Button  data-id = {idx}
-                    onClick = {postFieldDeleteHandler} disabled >
-                    Remove</Button>
+                    ''
                     : 
                     <Button  data-id = {idx}
                         onClick = {postFieldDeleteHandler}  >

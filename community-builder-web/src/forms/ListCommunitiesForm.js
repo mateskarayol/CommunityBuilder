@@ -22,7 +22,7 @@ class ListCommunitiesForm extends Component {
     this.state = {
       showCommunityHome : false,
       community : '',
-      keyword : '',
+      keyword : '*',
       communityList : []
     }
   }

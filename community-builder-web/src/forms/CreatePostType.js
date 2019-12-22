@@ -31,15 +31,8 @@ class CreatePostType extends Component {
                           { fieldKey : "post_name",
                             required : true,
                             fieldLabel : 'Post Name',
-                            fieldType : 'POSTNAME',
-                            explanation : 'Post Name',
-                            default : true
-                          },
-                          { fieldKey : "message",
-                            required : true,
-                            fieldLabel : 'Message',
                             fieldType : 'TEXT',
-                            explanation : 'Message',
+                            explanation : 'Post Name',
                             default : true
                           },
                           { fieldKey : "semantic_tag",
