@@ -44,10 +44,7 @@ const PostField = ({    idx,
                         <option value ="" >Select</option>
                         <option value ="TEXT" >Text</option>
                         <option value ="NUMBER" >Number</option>
-                        <option value ="DECIMAL" >Decimal</option>
                         <option value ="DATETIME" >DateTime</option>
-                        <option value ="LOCATION" >Location</option>
-                        <option value ="URI" >Link</option>
                         <option value ="IMAGE" >Image</option>
                         <option value ="CHOICE" >Choice</option>
                     </Input>
