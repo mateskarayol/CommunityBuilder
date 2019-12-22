@@ -13,7 +13,7 @@ const PostCard = ({ postList, showHandler}) => {
         <CardColumns>
             {
                 postList.map((val, idx) =>  (
-                    <PostCardInfo item = {postList[idx].fieldValueMap} ></PostCardInfo>
+                    <PostCardInfo fields = {postList[idx].fieldValueMap} tags = {postList[idx].semanticTagSet}></PostCardInfo>
                 ))
             }
         </CardColumns>
@@ -21,29 +21,38 @@ const PostCard = ({ postList, showHandler}) => {
   );
 };
 
-const PostCardInfo = ({item, id}) => {
+const PostCardInfo = ({fields,tags}) => {
   let post_name =  '';
   return (
     
       <Card>
         {
-              Object.keys(item).map(function(key){
+              Object.keys(fields).map(function(key){
                 if (key == 'post_name'){
-                  post_name = item[key];
+                  post_name = fields[key];
                 }
               })
             }
           <CardHeader tag="h6">{post_name}</CardHeader>
           <CardBody>
             {
-              Object.keys(item).map(function(key){
+              Object.keys(fields).map(function(key){
                 // convert key to label
                 var label = key.split('_').join(' ');
                 label = label[0].toUpperCase() + label.slice(1);
 
-                return <CardText>{label}: {item[key]}</CardText>
+                return <CardText>{label}: {fields[key]}</CardText>
               })
             }
+           <CardText> Tags : 
+            {
+                
+                tags.map((val,idx) => (
+                    '#' + val.label + ' | '
+                ))
+                
+            }
+            </CardText>
           </CardBody>
       </Card> 
     
