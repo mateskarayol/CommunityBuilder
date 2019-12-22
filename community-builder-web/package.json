@@ -20,8 +20,8 @@
     "reactstrap": "^8.1.1"
   },
   "engines": {
-    "npm": "5.7.1",
-    "node": "9.5.0"
+    "npm": "6.4.1",
+    "node": "10.15.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "https://community-builder-prj.herokuapp.com"
 }
