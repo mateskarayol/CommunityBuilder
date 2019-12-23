@@ -3,7 +3,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import DatePicker from 'react-datepicker';
-import LocationPicker from 'react-location-picker';
 import ImageUploader from 'react-images-upload';
 import ReactTags from 'react-tag-autocomplete';
 import { Redirect } from 'react-router-dom';
@@ -278,14 +277,6 @@ class CreatePost extends Component {
                             selected = {this.state.form.post.fieldValueMap[key]}
                             onChange = {this.dateTimeChangeHandler.bind(this, key)}
                           />;
-      case 'LOCATION':
-        return <LocationPicker  id = {key}
-                          name = {key}
-                          containerElement={ <div style={ {height: '100%'} } /> }
-                          mapElement={ <div style={ {height: '400px'} } /> }
-                          defaultPosition={defaultPosition}
-                          onChange={this.locationChangeHandler}
-                      />;
       case 'URI':
         return <Input id = {key} type = "text" 
                           name = {key} 
