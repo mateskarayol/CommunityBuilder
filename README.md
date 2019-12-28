@@ -1,7 +1,9 @@
 # software-development-practice
 Repository for SWE-573 master class.
 
-# Setting Up Development Environment 5.5.1. Setting Up Front-End Environment
+# Setting Up Development Environment 
+
+## Setting Up Front-End Environment
 
 In order to run front-end on local environment follow the steps below :
 
@@ -19,7 +21,7 @@ or
 3. Run “npm start”
 4. As default “http://localhost:3000/" would be shown on browser as mainpage.
 
-#Setting Up Backend Environment
+## Setting Up Backend Environment
 
 In order to run front-end on local environment follow the steps below :
 
@@ -33,7 +35,7 @@ In order to run front-end on local environment follow the steps below :
 8. Open “http://localhost:8080/" on browser.
 
         
-#Deployment
+# Deployment
 
 In order to deploy back-end module follow the steps below :
 Deployed back-end module : https://community-builder-prj.herokuapp.com/
