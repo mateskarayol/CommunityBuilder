@@ -1,4 +1,4 @@
-# software-development-practice
+# COMMUNITY BUILDER
 Repository for SWE-573 master class.
 
 
