@@ -4,28 +4,10 @@ import { InputGroup, InputGroupAddon, Input, Button} from 'reactstrap';
 
 class Homepage extends Component {
 
-  constructor(){
-    super();
-
-    this.state = {
-      keyword : '',
-    }
-  }
-
-  inputChangeHandler  = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({
-      [name]: value
-    });
-  }
-
   render(){
     return (
       <div>
         <div className="homeBody">
-            
-      
             <br/>
             <Link to = "/listCommunities">
               <Button color="success">List Communities</Button>

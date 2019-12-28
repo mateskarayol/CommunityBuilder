@@ -38,10 +38,11 @@ const PostCardInfo = ({fields,tags}) => {
             {
               Object.keys(fields).map(function(key){
                 // convert key to label
-                var label = key.split('_').join(' ');
-                label = label[0].toUpperCase() + label.slice(1);
-
-                return <CardText>{label}: {fields[key]}</CardText>
+                if (key != 'post_name'){
+                  var label = key.split('_').join(' ');
+                  label = label[0].toUpperCase() + label.slice(1);
+                  return <CardText>{label}: {fields[key]}</CardText>
+               }
               })
             }
            <CardText> Tags : 

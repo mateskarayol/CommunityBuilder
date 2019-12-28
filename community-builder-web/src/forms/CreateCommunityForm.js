@@ -35,7 +35,7 @@ class CreateCommunityForm extends Component {
                                 { fieldKey : "post_name",
                                   required : false,
                                   fieldLabel : 'Post Name',
-                                  fieldType : 'POSTNAME',
+                                  fieldType : 'TEXT',
                                   explanation : 'Post Name'
                                 },
                                 { fieldKey : "message",
